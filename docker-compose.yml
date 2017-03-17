@@ -1,0 +1,27 @@
+#ordering of db vs node running - figure out
+db:
+  image: postgres
+  ports:
+    - 6542:5432
+  environment:
+    POSTGRES_USER: username
+    POSTGRES_PASSWORD: pgpassword
+    POSTGRES_DB: wikistack
+wikistack:
+  build: .
+  volumes:
+    - .:/usr/src/app
+  ports:
+    - 3001:8080
+  links:
+    - db
+  # environment:
+  #   - PGHOST=db
+  #   - PGDATABASE=postgres
+  #   - PGUSER=postgres
+  environment:
+    SEQ_DB: wikistack
+    SEQ_USER: username
+    SEQ_PW: pgpassword
+    PORT: 8080
+    DATABASE_URL: postgres://username:pgpassword@db:5432/wikistack
