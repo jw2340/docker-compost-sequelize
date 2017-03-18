@@ -30,33 +30,40 @@ const serverStr = `
     });
 `;
 
-const npmScripts = `
-    const Promise = require('bluebird');
-    const exec = Promise.promisify(require('child_process').exec);
-    exec('npm init -y')
-    .then(() => {
-      exec('npm install --save express');
-    })
-    .catch(console.error);
+const npmScripts = `const Promise = require('bluebird');
+const exec = Promise.promisify(require('child_process').exec);
+exec('npm init -y')
+.then(() => {
+  exec('npm install --save express');
+})
+.catch(console.error);
 `;
 
 const dockerFunc = (serverStr, dbStr) => {
-    //child process exec
+    //promisified child process exec
     const exec = Promise.promisify(require('child_process').exec);
     const writeFile = Promise.promisify(fs.writeFile);
     //create user app folder
     exec('mkdir user-app')
     .then(() => {
+        //change current working directory
+        try {
+          process.chdir('./user-app');
+          console.log(`Changed working directory: ${process.cwd()}`);
+        }
+        catch (err) {
+          console.log(`chdir: ${err}`);
+        }
         //write npmScripts to user-app folder
-        exec('touch user-app/npmScripts.js')
+        exec('touch npmScripts.js');
     })
     .then(() => {
         //write npmScripts string to npmScripts.js
-        writeFile('user-app/npmScripts.js', npmScripts);
+        writeFile('npmScripts.js', npmScripts);
     })
     .then(() => {
         //run npmScripts file
-        exec('node user-app/npmScripts.js');
+        exec('node npmScripts.js');
     })
     .catch(console.error);
 
