@@ -1,4 +1,5 @@
 const Promise = require('bluebird');
+const fs = require('fs');
 
 const dbStr = `
     const db = new Sequelize(process.env.DATABASE_URL);
@@ -40,24 +41,24 @@ const npmScripts = `
 `;
 
 const dockerFunc = (serverStr, dbStr) => {
-    //child process spawn
-    //does spawn need to be promisified? it is async but no callback
-    const spawn = require('child_process').spawn;
+    //child process exec
     const exec = Promise.promisify(require('child_process').exec);
-
+    const writeFile = Promise.promisify(fs.writeFile);
     //create user app folder
-    const mkdir = spawn('mkdir', ['user-app']);
-
-    //write npmScripts to user-app folder
-    exec('touch user-app/npmScripts.js');
+    exec('mkdir user-app')
     .then(() => {
-
+        //write npmScripts to user-app folder
+        exec('touch user-app/npmScripts.js')
     })
     .then(() => {
+        //write npmScripts string to npmScripts.js
+        writeFile('user-app/npmScripts.js', npmScripts);
+    })
+    .then(() => {
+        //run npmScripts file
         exec('node user-app/npmScripts.js');
     })
     .catch(console.error);
-    //run npmScripts file
 
     //make connection to db
     // create db
@@ -65,4 +66,4 @@ const dockerFunc = (serverStr, dbStr) => {
 
 };
 
-module.exports = {dockerFunc}
+dockerFunc();

@@ -17,5 +17,18 @@
     "pg-hstore": "^2.3.2",
     "retry": "^0.10.1",
     "sequelize": "^3.21.0"
-  }
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jw2340/docker-compose-wikistack.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jw2340/docker-compose-wikistack/issues"
+  },
+  "homepage": "https://github.com/jw2340/docker-compose-wikistack#readme",
+  "description": ""
 }

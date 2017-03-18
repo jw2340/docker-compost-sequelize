@@ -3,8 +3,6 @@ const retry = require('retry');
 const http = require('http');
 const server = http.createServer();
 const Sequelize = require('sequelize');
-const dockerFunc = require('./function').dockerFunc;
-
 var operation = retry.operation({retries:3});
 
 operation.attempt(function() {
@@ -43,8 +41,6 @@ operation.attempt(function() {
         res.end();
       })
       .catch(console.error);
-
-      dockerFunc();
     });
 
     // var models = require('./models');
