@@ -1,4 +1,3 @@
-#ordering of db vs node running - figure out
 db:
   image: postgres
   ports:

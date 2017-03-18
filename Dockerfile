@@ -13,5 +13,4 @@ COPY . /usr/src/app
 
 EXPOSE 8080
 
-# make sure postgres is on?
 CMD [ "npm", "start" ]
